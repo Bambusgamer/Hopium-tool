@@ -2,10 +2,12 @@
 	"name": "h2fetcher",
 	"version": "1.0.0",
 	"description": "",
-	"main": "src/index.js",
-	"types": "src/index.d.ts",
+	"main": "src/index.ts",
+	"engines": {
+		"ts-node": "^10.9.1"
+	},
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"start": "ts-node src/index.ts"
 	},
 	"keywords": [],
 	"author": "",

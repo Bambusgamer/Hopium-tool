@@ -116,7 +116,7 @@ export interface Station {
     opening_hours: string | null;
     operatorhotline: string | null;
     operatorname: string | null;
-    // i dont wanna type these bull shit object returned by the api. what is this naming convention anyways???? happy mix????
+    // i dont wanna type these bull shit objects returned by the api. what is this naming convention anyways???? happy mix????
     paymenttypes: any[] | null;
     price_message: string | null;
     progress_description: string | null;

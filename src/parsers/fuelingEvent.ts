@@ -26,8 +26,6 @@ export default function parseFuelingEvent(status: StationStatus, fuelType: FuelT
     const time = parseInt(match[3]);
     const unit = match[4];
 
-    console.log(amount, time, unit)
-
     const timestamp = approximateTimestamp(time, unit);
 
     if (!timestamp) return null;

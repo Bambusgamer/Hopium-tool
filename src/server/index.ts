@@ -35,6 +35,14 @@ app.use((req, res, next) => {
 
 app.use('/api', apiRouter);
 
+app.use(express.static('src/server/static', {
+    extensions: ['html', 'htm']
+}));
+
+app.use((req, res) => {
+    res.redirect('/404');
+});
+
 export default function startServer() {
     app.listen(process.env.PORT, () => {
         console.log(`Server is running on port ${process.env.PORT}`);

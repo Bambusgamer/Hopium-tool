@@ -1,4 +1,4 @@
-import { type StationStatus, type ParsedStation, type DownTime, FuelType, StatusMessage } from 'types';
+import { type StationStatus, type ParsedStation, type Downtime, FuelType, StatusMessage } from 'utils/types';
 import approximateTimestamp from 'parsers/timestamp';
 import trimString from 'parsers/trimString';
 
@@ -7,7 +7,7 @@ import trimString from 'parsers/trimString';
  * seit 7 Stunden
  * seit mehr als 24 Stunden
  */
-const downTimeRegex = /seit\s*(\d+)\s*(mehr\s*als)?\s*(Minuten|Stunden)/i;
+const downtimeRegex = /seit\s*(\d+)\s*(mehr\s*als)?\s*(Minuten|Stunden)/i;
 
 /**
  * Parses a station status and returns a down time if the status is a down time.
@@ -15,12 +15,12 @@ const downTimeRegex = /seit\s*(\d+)\s*(mehr\s*als)?\s*(Minuten|Stunden)/i;
  * @param fuelType The fuel type of the status
  * @returns The parsed down time or null if the status is not a down time
  */
-export default function parseDownTime(status: StationStatus, fuelType: FuelType): DownTime | null {
+export default function parseDowntime(status: StationStatus, fuelType: FuelType): Downtime | null {
     if (!status.activity_message || typeof status.activity_message !== 'string') return null;
 
     if (status.combinedstatus !== StatusMessage.EXCEPTION) return null;
 
-    const match = status.activity_message.match(downTimeRegex);
+    const match = status.activity_message.match(downtimeRegex);
 
     if (!match) return null;
 

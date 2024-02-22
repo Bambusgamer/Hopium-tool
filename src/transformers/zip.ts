@@ -14,7 +14,7 @@ export default function createZip(files: {
 
     zip.file('stations.csv', files.stations);
     zip.file('fuelingEvents.csv', files.fuelingEvents);
-    zip.file('downTimes.csv', files.downtimes);
+    zip.file('downtimes.csv', files.downtimes);
 
     return zip.generateNodeStream({
         type: 'nodebuffer',

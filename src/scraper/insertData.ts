@@ -1,6 +1,6 @@
-import { type ParsedStation, type FuelingEvent, type DownTime } from "types";
+import { type ParsedStation, type FuelingEvent, type Downtime } from "utils/types";
 import mongoose from "mongoose";
-import { StationSchema, FuelingEventSchema, DownTimeSchema } from "models";
+import { StationSchema, FuelingEventSchema, DowntimeSchema } from "utils/models";
 import dotenv from "dotenv";
 
 /**
@@ -10,7 +10,7 @@ import dotenv from "dotenv";
 export default async function insertData(data: {
     stations: Map<string, ParsedStation>,
     fuelingEvents: FuelingEvent[],
-    downTimes: DownTime[]
+    downtimes: Downtime[]
 }) {
     dotenv.config();
 
@@ -33,7 +33,7 @@ export default async function insertData(data: {
     })));
 
     await insertFuelingEvents(connection, data.fuelingEvents);
-    await insertDownTimes(connection, data.downTimes);
+    await insertDowntimes(connection, data.downtimes);
 
     connection.close();
 }
@@ -68,48 +68,48 @@ async function insertFuelingEvents(connection: mongoose.Connection, fuelingEvent
 
 /**
  * Update the down times
- * @param downTimes down times to update
- * @param DownTime model to use
+ * @param downtimes down times to update
+ * @param Downtime model to use
  */
-async function insertDownTimes(connection: mongoose.Connection, downTimes: DownTime[]) {
-    const DownTime = connection.model('DownTime', DownTimeSchema);
+async function insertDowntimes(connection: mongoose.Connection, downtimes: Downtime[]) {
+    const Downtime = connection.model('Downtime', DowntimeSchema);
 
-    const recentStoredDownTimes = await DownTime.find({
-        stationId: { $in: downTimes.map(downTime => downTime.stationId) }
+    const recentStoredDowntimes = await Downtime.find({
+        stationId: { $in: downtimes.map(downtime => downtime.stationId) }
     }).sort({ end: -1 });
 
     const ops = [];
 
-    for (const downTime of downTimes) {
-        const mostRecentStoredDownTime = recentStoredDownTimes.find(storedDownTime => storedDownTime.stationId === downTime.stationId && storedDownTime.fuelType === downTime.fuelType);
+    for (const downtime of downtimes) {
+        const mostRecentStoredDowntime = recentStoredDowntimes.find(storedDowntime => storedDowntime.stationId === downtime.stationId && storedDowntime.fuelType === downtime.fuelType);
 
-        if (!mostRecentStoredDownTime) ops.push({ insertOne: { document: downTime } });
+        if (!mostRecentStoredDowntime) ops.push({ insertOne: { document: downtime } });
         else {
-            if (Date.now() - mostRecentStoredDownTime.startUnix > 1000 * 60 * 60) {
-                if (Math.abs(downTime.startUnix - mostRecentStoredDownTime.startUnix) < 1000 * 60 * 60)
+            if (Date.now() - mostRecentStoredDowntime.startUnix > 1000 * 60 * 60) {
+                if (Math.abs(downtime.startUnix - mostRecentStoredDowntime.startUnix) < 1000 * 60 * 60)
                     ops.push({
                         updateOne: {
-                            filter: { _id: mostRecentStoredDownTime._id },
+                            filter: { _id: mostRecentStoredDowntime._id },
                             update: {
                                 $set: {
-                                    end: downTime.end,
-                                    reason: downTime.reason,
-                                    duration: Math.floor((Date.now() - mostRecentStoredDownTime.startUnix) / 1000 / 60)
+                                    end: downtime.end,
+                                    reason: downtime.reason,
+                                    duration: Math.floor((Date.now() - mostRecentStoredDowntime.startUnix) / 1000 / 60)
                                 }
                             }
                         }
                     });
                 else
-                    ops.push({ insertOne: { document: downTime } });
+                    ops.push({ insertOne: { document: downtime } });
             } else {
                 ops.push({
                     updateOne: {
-                        filter: { _id: mostRecentStoredDownTime._id },
+                        filter: { _id: mostRecentStoredDowntime._id },
                         update: {
                             $set: {
-                                end: downTime.end,
-                                reason: downTime.reason,
-                                duration: Math.floor((Date.now() - mostRecentStoredDownTime.startUnix) / 1000 / 60)
+                                end: downtime.end,
+                                reason: downtime.reason,
+                                duration: Math.floor((Date.now() - mostRecentStoredDowntime.startUnix) / 1000 / 60)
                             }
                         }
                     }
@@ -118,5 +118,5 @@ async function insertDownTimes(connection: mongoose.Connection, downTimes: DownT
         }
     }
 
-    await DownTime.bulkWrite(ops);
+    await Downtime.bulkWrite(ops);
 }

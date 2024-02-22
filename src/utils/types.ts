@@ -51,7 +51,7 @@ export interface FuelingEvent {
     unix: number;
 };
 
-export interface DownTime {
+export interface Downtime {
     stationId: string;
     fuelType: FuelType;
     start: string;

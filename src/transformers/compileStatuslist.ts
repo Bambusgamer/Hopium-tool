@@ -1,22 +1,22 @@
-import { type ParsedStation, type FuelingEvent, type DownTime, type PlanningPhase, FuelType } from "types";
-import type { Response } from "./requestH2LiveLists";
+import { type ParsedStation, type FuelingEvent, type Downtime, type PlanningPhase, FuelType } from "utils/types";
+import type { Response } from "scraper/requestH2LiveLists";
 import parseFuelingEvent from "parsers/fuelingEvent";
-import parseDownTime from "parsers/downTime";
-import parsePlanningPhase from "parsers/PlanningPhase";
+import parseDowntime from "parsers/downtime";
+import parsePlanningPhase from "parsers/planningPhase";
 
 
 export default function compileStatuslist(statuslists: Response['statuslist'], masterlist: Map<string, ParsedStation>): {
     fuelingEvents: FuelingEvent[];
-    downTimes: DownTime[];
+    downtimes: Downtime[];
     planningPhases: PlanningPhase[];
 } {
     const events: {
         fuelingEvents: FuelingEvent[];
-        downTimes: DownTime[];
+        downtimes: Downtime[];
         planningPhases: PlanningPhase[];
     } = {
         fuelingEvents: [],
-        downTimes: [],
+        downtimes: [],
         planningPhases: []
     };
 
@@ -27,8 +27,8 @@ export default function compileStatuslist(statuslists: Response['statuslist'], m
             const fuelingEvent = parseFuelingEvent(status, key as FuelType, masterlist.get(status.idx));
             if (fuelingEvent) events.fuelingEvents.push(fuelingEvent);
 
-            const downTime = parseDownTime(status, key as FuelType);
-            if (downTime) events.downTimes.push(downTime);
+            const downtime = parseDowntime(status, key as FuelType);
+            if (downtime) events.downtimes.push(downtime);
 
             const planningPhase = parsePlanningPhase(status, key as FuelType, masterlist.get(status.idx));
             if (planningPhase) events.planningPhases.push(planningPhase);

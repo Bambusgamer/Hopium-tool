@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { baseUrl } from '../constants';
+import { baseUrl } from 'utils/constants';
 import parseToken from 'parsers/token';
 
 /**

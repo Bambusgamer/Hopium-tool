@@ -1,5 +1,5 @@
-import type { Station, ParsedStation } from 'types';
-import { FuelType } from 'types';
+import type { Station, ParsedStation } from 'utils/types';
+import { FuelType } from 'utils/types';
 import parsePrice from 'parsers/price';
 import trimString from 'parsers/trimString';
 

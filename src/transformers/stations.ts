@@ -1,4 +1,4 @@
-import { type ParsedStation, FuelType } from 'types';
+import { type ParsedStation, FuelType } from 'utils/types';
 import generateCSV from 'transformers/csv';
 import generatePriceString from 'transformers/price';
 import generateCommaString from 'transformers/commaString';

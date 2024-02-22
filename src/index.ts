@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 
-import scraper from './scraper';
-import startServer from './server';
+import scraper from 'scraper';
+import startServer from 'server';
 
 dotenv.config();
 

@@ -1,6 +1,6 @@
 import { Schema, type Model, type Connection, SchemaTypes, type Types, type HydratedDocument } from 'mongoose';
 
-import type { ParsedStation, FuelingEvent, DownTime } from 'types';
+import type { ParsedStation, FuelingEvent, Downtime } from 'utils/types';
 
 /**
  * Model that represents a fueling station
@@ -126,11 +126,11 @@ export const FuelingEventSchema = new Schema<FuelingEvent, FuelingEventModel>({
 /**
  * Model that represents a downtime
  */
-export type DownTimeModel = Model<DownTime>;
+export type DowntimeModel = Model<Downtime>;
 
-export type HydratedDownTime = HydratedDocument<DownTime>;
+export type HydratedDowntime = HydratedDocument<Downtime>;
 
-export const DownTimeSchema = new Schema<DownTime, DownTimeModel>({
+export const DowntimeSchema = new Schema<Downtime, DowntimeModel>({
     stationId: {
         type: SchemaTypes.String,
         required: true

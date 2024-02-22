@@ -1,4 +1,4 @@
-import { type StationStatus, type ParsedStation, type FuelingEvent, FuelType } from 'types';
+import { type StationStatus, type ParsedStation, type FuelingEvent, FuelType } from 'utils/types';
 import approximateTimestamp from 'parsers/timestamp';
 import trimString from 'parsers/trimString';
 

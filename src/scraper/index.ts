@@ -1,8 +1,8 @@
 import scrapeToken from 'scraper/scrapeToken';
 import requestH2LiveLists from 'scraper/requestH2LiveLists';
-import compileMasterlist from 'scraper/compileMasterlist';
-import compileStatuslist from 'scraper/compileStatuslist';
-import writePlanningPhases from './writePlanningPhases';
+import compileMasterlist from 'transformers/compileMasterlist';
+import compileStatuslist from 'transformers/compileStatuslist';
+import writePlanningPhases from 'transformers/writePlanningPhases';
 import insertData from 'scraper/insertData';
 
 /**
@@ -28,7 +28,7 @@ export default async function scrapeH2LiveData() {
         await insertData({
             stations: masterlistWithPlanningPhases,
             fuelingEvents: compiledStatuslist.fuelingEvents,
-            downTimes: compiledStatuslist.downTimes
+            downtimes: compiledStatuslist.downtimes
         })
     } catch (error) {
         console.error(error);

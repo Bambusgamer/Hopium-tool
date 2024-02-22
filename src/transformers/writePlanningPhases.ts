@@ -1,4 +1,4 @@
-import { type ParsedStation, type PlanningPhase, FuelType } from 'types';
+import { type ParsedStation, type PlanningPhase, FuelType } from 'utils/types';
 
 /**
  * Adds the planning phase progress to the station.

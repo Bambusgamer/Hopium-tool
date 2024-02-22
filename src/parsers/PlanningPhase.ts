@@ -1,4 +1,4 @@
-import { type StationStatus, type ParsedStation, type PlanningPhase, FuelType, StatusMessage } from 'types';
+import { type StationStatus, type ParsedStation, type PlanningPhase, FuelType, StatusMessage } from 'utils/types';
 import trimString from 'parsers/trimString';
 
 

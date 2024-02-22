@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import { FuelTypes, type FuelType, type StatusResponse, type MasterResponse, type StationStatus, type Station } from '../types';
-import { apiUrl } from '../constants';
+import { FuelTypes, type FuelType, type StatusResponse, type MasterResponse, type StationStatus, type Station } from 'utils/types';
+import { apiUrl } from 'utils/constants';
 
 export interface Response {
     masterlist: {

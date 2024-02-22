@@ -7,7 +7,6 @@
 export default function generateCSV(columns: string[], rows: any[][]): string {
     let csv = '';
 
-    // csv += columns.map(encodeRowItem).join(',') + '\n';
     csv += columns.join(',') + '\n';
     csv += rows.map(row => row.map(encodeRowItem).join(',')).join('\n');
 

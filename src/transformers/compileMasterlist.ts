@@ -1,4 +1,4 @@
-import { type ParsedStation, FuelType } from 'types';
+import { type ParsedStation, FuelType } from 'utils/types';
 import { type Response } from 'scraper/requestH2LiveLists';
 
 import parseStation from 'parsers/station';

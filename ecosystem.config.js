@@ -1,6 +1,6 @@
 module.exports = {
     apps: [{
-        name: 'h2-tool',
+        name: 'h2.live-scraper',
         namespace: 'Hopium-tool',
         script: 'npm',
         args: 'run start',

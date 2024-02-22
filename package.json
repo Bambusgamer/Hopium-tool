@@ -1,5 +1,5 @@
 {
-	"name": "h2fetcher",
+	"name": "h2.live-scraper",
 	"version": "1.0.0",
 	"description": "",
 	"main": "src/index.ts",

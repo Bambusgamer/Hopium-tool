@@ -5,17 +5,17 @@ import generateFuelingEventsCSV from 'transformers/fuelingEvents';
 
 /**
  * Returns a CSV file containing all fueling events
- * @route GET /data/fuelingEvents.csv
+ * @route GET /data/fueling-events.csv
  * @returns A CSV file containing all fueling events
  */
 export default {
     /**
-     * @route GET /fuelingEvents.csv
+     * @route GET /fueling-events.csv
      */
-    route: '/fuelingEvents.csv',
+    route: '/fueling-events.csv',
     /**
       * Returns a CSV file containing all fueling events
-      * @route GET /data/fuelingEvents.csv
+      * @route GET /data/fueling-events.csv
       * @param req The request object
       * @param res The response object
       * @returns A CSV file containing all fueling events

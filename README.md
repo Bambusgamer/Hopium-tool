@@ -12,7 +12,7 @@
     <br />
     <a href="https://github.com/bambusgamer/h2.live-scraper/issues">Bug reporten</a>
     ·
-    <a href="https://github.com/bambusgamer/h2.live-scraper/issues">Request Feature</a>
+    <a href="https://github.com/bambusgamer/h2.live-scraper/issues">Feature anfragen</a>
   </p>
 </div>
 

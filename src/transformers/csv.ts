@@ -14,13 +14,13 @@ export default function generateCSV(columns: string[], rows: any[][]): string {
 }
 
 /**
- * Encode a row item for CSV to allow for special characters
+ * Encode a row item for CSV to allow for special characters and removes new lines
  * @param item The item to encode
  * @returns The encoded item
  */
 function encodeRowItem(item: any): string {
     if (typeof item === 'string') {
-        return `"${item.replace(/"/g, '""')}"`;
+        return `"${item.replace(/"/g, '""')}"`.replace(/(\r\n|\n|\r)/gm, "");
     }
     return item;
 }

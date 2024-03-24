@@ -57,6 +57,7 @@ export interface Downtime {
     start: string;
     startUnix: number;
     end: string;
+    endUnix: number;
     duration: number;
     reason: string;
 }

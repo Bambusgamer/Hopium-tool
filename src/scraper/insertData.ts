@@ -76,7 +76,7 @@ async function insertDowntimes(connection: mongoose.Connection, downtimes: Downt
 
     const recentStoredDowntimes = await Downtime.find({
         stationId: { $in: downtimes.map(downtime => downtime.stationId) }
-    }).sort({ end: -1 });
+    }).sort({ endUnix: -1 });
 
     const ops = [];
 
@@ -85,36 +85,21 @@ async function insertDowntimes(connection: mongoose.Connection, downtimes: Downt
 
         if (!mostRecentStoredDowntime) ops.push({ insertOne: { document: downtime } });
         else {
-            if (Date.now() - mostRecentStoredDowntime.startUnix > 1000 * 60 * 60) {
-                if (Math.abs(downtime.startUnix - mostRecentStoredDowntime.startUnix) < 1000 * 60 * 60)
-                    ops.push({
-                        updateOne: {
-                            filter: { _id: mostRecentStoredDowntime._id },
-                            update: {
-                                $set: {
-                                    end: downtime.end,
-                                    reason: downtime.reason,
-                                    duration: Math.floor((Date.now() - mostRecentStoredDowntime.startUnix) / 1000 / 60)
-                                }
-                            }
-                        }
-                    });
-                else
-                    ops.push({ insertOne: { document: downtime } });
-            } else {
+            if (Math.abs(downtime.endUnix - mostRecentStoredDowntime.endUnix) < 1000 * 60 * 30) {
                 ops.push({
                     updateOne: {
                         filter: { _id: mostRecentStoredDowntime._id },
                         update: {
                             $set: {
                                 end: downtime.end,
+                                endUnix: downtime.endUnix,
                                 reason: downtime.reason,
-                                duration: Math.floor((Date.now() - mostRecentStoredDowntime.startUnix) / 1000 / 60)
+                                duration: Math.floor((downtime.endUnix - mostRecentStoredDowntime.startUnix) / 1000 / 60)
                             }
                         }
                     }
                 });
-            }
+            } else ops.push({ insertOne: { document: downtime } });
         }
     }
 

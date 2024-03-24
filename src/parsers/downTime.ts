@@ -39,6 +39,7 @@ export default function parseDowntime(status: StationStatus, fuelType: FuelType)
         start: start.timestamp,
         startUnix: start.unix,
         end: end.timestamp,
+        endUnix: end.unix,
         duration: Math.floor((end.unix - start.unix) / 1000 / 60),
         reason: trimString(status.combinedremark || '')
     };

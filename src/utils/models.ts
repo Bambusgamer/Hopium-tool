@@ -151,6 +151,10 @@ export const DowntimeSchema = new Schema<Downtime, DowntimeModel>({
         type: SchemaTypes.String,
         required: true
     },
+    endUnix: {
+        type: SchemaTypes.Number,
+        required: true
+    },
     duration: {
         type: SchemaTypes.Number,
         required: true

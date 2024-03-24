@@ -11,11 +11,11 @@ if (!process.env.MONGO_URI) throw new Error('MONGO_URI not set');
 
 const connection = mongoose.createConnection(process.env.MONGO_URI);
 
-const Downtime = connection.model('Downtimes', DowntimeSchema);
+const Downtime = connection.model('Downtimes2', DowntimeSchema);
 
-const Downtime2 = connection.model('Downtimes', DowntimeSchema);
+const Downtime2 = connection.model('Downtimes3', DowntimeSchema);
 
-const duplicateFree: HydratedDowntime[] = [];
+let duplicateFree: HydratedDowntime[] = [];
 
 function station(doc: HydratedDowntime) {
     return (_doc: HydratedDowntime) => _doc.stationId === doc.stationId && _doc.fuelType === doc.fuelType;
@@ -46,6 +46,10 @@ void Downtime.find({}).then(
             }
         }
 
+        const highToLow = duplicateFree.sort((a, b) => b.endUnix - a.endUnix);
+
+        duplicateFree = cleaner(highToLow);
+
         console.log('Total:', docs.length);
         console.log('Duplicates:', duplicates.length);
         console.log('Duplicate free:', duplicateFree.length);
@@ -53,6 +57,34 @@ void Downtime.find({}).then(
         await Downtime2.deleteMany({});
         await Downtime2.insertMany(duplicateFree);
     })
+
+function cleaner(docs: HydratedDowntime[]): HydratedDowntime[] {
+    if (docs.length === 0) return [];
+
+    const [doc, ...rest] = docs;
+
+    const { docs: cleaned, extracted } = duplicateCleaner(rest, doc);
+
+    return [extracted, ...cleaner(cleaned)];
+}
+
+function duplicateCleaner(docs: HydratedDowntime[], doc: HydratedDowntime): {
+    docs: HydratedDowntime[];
+    extracted: HydratedDowntime;
+} {
+    const extracted = docs.findIndex(_doc => station(doc)(_doc) && Math.abs(_doc.endUnix - doc.endUnix) < 1000 * 60 * 15);
+
+    if (extracted === -1) {
+        return { docs, extracted: doc };
+    }
+
+    const extractedDoc = docs[extracted];
+
+    doc.startUnix = Math.min(doc.startUnix, extractedDoc.startUnix);
+    doc.start = doc.startUnix === extractedDoc.startUnix ? extractedDoc.start : doc.start;
+
+    return duplicateCleaner(docs.filter((_doc, i) => i !== extracted), doc);
+}
 
 function dateBuilder(dateString: string): Date {
     const date = new Date();
@@ -72,3 +104,4 @@ function dateBuilder(dateString: string): Date {
 
     return date;
 }
+
